@@ -46,8 +46,8 @@ Send a JSON object with the following structure:
         "firstname": "John",
         "lastname": "Doe"
       },
-      "email": "john@example.com",
-        // ...other fields
+      "email": "john@example.com"
+      // ...other fields
     }
   }
   ```
@@ -95,6 +95,109 @@ curl -X POST http://localhost:4000/user/register \
       "firstname": "John",
       "lastname": "Doe"
     },
+    "email": "john@example.com",
+    "password": "yourpassword"
+  }'
+```
+
+---
+
+# User Login API
+
+## Endpoint
+
+`POST /user/login`
+
+## Description
+
+Authenticates a user and returns a JWT token if credentials are valid.
+
+## Request Body
+
+Send a JSON object with the following structure:
+
+```json
+{
+  "email": "john@example.com",
+  "password": "yourpassword"
+}
+```
+
+### Field Requirements
+
+- `email`: **String**, required, must be a valid email address
+- `password`: **String**, required, minimum 6 characters
+
+## Responses
+
+### Success
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "token": "jwt_token_here",
+    "user": {
+      "_id": "user_id_here",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john@example.com"
+      // ...other fields
+    }
+  }
+  ```
+
+### Validation Error
+
+- **Status Code:** `400 Bad Request`
+- **Body:**
+  ```json
+  {
+    "error": [
+      {
+        "type": "field",
+        "msg": "invalid email",
+        "path": "email",
+        "location": "body"
+      },
+      {
+        "type": "field",
+        "msg": "invalid password",
+        "path": "password",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+### Authentication Error
+
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+  ```json
+  {
+    "error": "invalid username or password"
+  }
+  ```
+
+### Server Error
+
+- **Status Code:** `500 Internal Server Error`
+- **Body:**
+  ```json
+  {
+    "error": "Error message"
+  }
+  ```
+
+## Example Request
+
+```bash
+curl -X POST http://localhost:4000/user/login \
+  -H "Content-Type: application/json" \
+  -d '{
     "email": "john@example.com",
     "password": "yourpassword"
   }'
