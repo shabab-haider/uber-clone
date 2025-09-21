@@ -16,6 +16,7 @@ router.post(
       .isLength({ min: 3 })
       .withMessage("The lastname must be 3 characters long"),
     body("email").isEmail().withMessage("email is not valid"),
+    body("password").isLength({ min: 6 }).withMessage("invalid password"),
   ],
   userRegistration
 );
