@@ -202,3 +202,115 @@ curl -X POST http://localhost:4000/user/login \
     "password": "yourpassword"
   }'
 ```
+
+---
+
+# User Profile API
+
+## Endpoint
+
+`POST /user/profile`
+
+## Description
+
+Returns the authenticated user's profile information.  
+Requires a valid JWT token in the request (sent via cookie or `Authorization` header).
+
+## Request
+
+No body required.  
+Send the JWT token as a cookie named `token` or in the `Authorization: Bearer <token>` header.
+
+## Responses
+
+### Success
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "user": {
+      "_id": "user_id_here",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john@example.com"
+      // ...other fields
+    }
+  }
+  ```
+
+### Unauthorized
+
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+  ```json
+  {
+    "error": "Unauthorized"
+  }
+  ```
+
+### Server Error
+
+- **Status Code:** `500 Internal Server Error`
+- **Body:**
+  ```json
+  {
+    "error": "Error message"
+  }
+  ```
+
+## Example Request
+
+```bash
+curl -X POST http://localhost:4000/user/profile \
+  -H "Authorization: Bearer jwt_token_here"
+```
+
+---
+
+# User Logout API
+
+## Endpoint
+
+`POST /user/logout`
+
+## Description
+
+Logs out the authenticated user by blacklisting the JWT token.  
+Requires a valid JWT token in the request (sent via cookie or `Authorization` header).
+
+## Request
+
+No body required.  
+Send the JWT token as a cookie named `token` or in the `Authorization: Bearer <token>` header.
+
+## Responses
+
+### Success
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "message": "Logged out sucessfully"
+  }
+  ```
+
+### Server Error
+
+- **Status Code:** `500 Internal Server Error`
+- **Body:**
+  ```json
+  {
+    "error": "Error message"
+  }
+  ```
+
+## Example Request
+
+```bash
+curl -X POST http://localhost:4000/user/logout \
+  -H "Authorization: Bearer jwt_token_here"
+```
